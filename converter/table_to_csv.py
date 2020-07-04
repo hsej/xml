@@ -152,8 +152,9 @@ if __name__ == '__main__':
         with open(args.schema, mode='rb') as schema_file:
             schema_xml = schema_file.read()
 
-    print(f'Processing: {args.input}')
     XMLParser.delete_file(args.output)
+
+    print(f'Processing: {args.input}.')
     parser = XMLParser(
         xml_file=args.input,
         tag=args.tag,
