@@ -20,7 +20,7 @@ class XMLParser(object):
     :param tag: Restrict elements to those elements that match the given tag, defaults to all elements.
         Namespaces must be declared in Clark's Notation: {URI}localname.
     :param dtd_validation: Validate the document against a DTD, defaults to False.
-    :param schema: Validate the document against an XML schema (string version).
+    :param schema: Validate the document against a XML schema (bytes version).
     """
 
     def __init__(self,
@@ -30,7 +30,7 @@ class XMLParser(object):
                  callable_kwargs: Optional[Dict] = None,
                  tag: Optional[str] = None,
                  dtd_validation: bool = False,
-                 schema: Optional[str] = None) -> None:
+                 schema: Optional[bytes] = None) -> None:
 
         if not callable(python_callable):
             raise TypeError('The `python_callable` parameter must be callable.')
@@ -91,18 +91,18 @@ class XMLParser(object):
         """
         return os.path.isfile(file) and os.path.getsize(file) > 0
 
-
-def delete_file(file: str) -> None:
-    """
-    Delete file (which may not exist).
-    Note: errno.ENOENT <=> no such file or directory.
-    """
-    try:
-        os.remove(file)
-        print(f'File deleted: {file}.')
-    except OSError as os_error:
-        if os_error.errno != errno.ENOENT:
-            print(f'{str(os_error)}.')
+    @staticmethod
+    def delete_file(file: str) -> None:
+        """
+        Delete file (which may not exist).
+        Note: errno.ENOENT <=> no such file or directory.
+        """
+        try:
+            os.remove(file)
+            print(f'File deleted: {file}.')
+        except OSError as os_error:
+            if os_error.errno != errno.ENOENT:
+                print(f'{str(os_error)}.')
 
 
 def convert_to_csv(element: etree.Element, **kwargs) -> None:
@@ -122,6 +122,7 @@ def convert_to_csv(element: etree.Element, **kwargs) -> None:
 
 
 if __name__ == '__main__':
+    schema_xml = None
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-t',
@@ -132,22 +133,35 @@ if __name__ == '__main__':
         '-i',
         '--input',
         help='Path to XML file',
+        type=str,
         default='table.xml',
-        type=str)
+        required=True)
     parser.add_argument(
         '-o',
         '--output',
         help='Path to CSV file',
+        type=str,
         default='table.csv',
+        required=True)
+    parser.add_argument(
+        '-s',
+        '--schema',
+        help='Path to XSD file',
+        default='table.xsd',
         type=str)
     args = parser.parse_args()
 
+    if XMLParser.is_non_empty_file(args.schema):
+        with open(args.schema, mode='rb') as schema_file:
+            schema_xml = schema_file.read()
+
     print(f'Processing: {args.input}')
-    delete_file(args.output)
+    XMLParser.delete_file(args.output)
     parser = XMLParser(
         xml_file=args.input,
         tag=args.tag,
         python_callable=convert_to_csv,
-        callable_kwargs={'csv_file': args.output}
+        callable_kwargs={'csv_file': args.output},
+        schema=schema_xml
     )
     print('Done!')

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns="http://www.sa.dk/xmlns/siard/1.0/schema0/table.xsd"
+           elementFormDefault="qualified"
+           targetNamespace="http://www.sa.dk/xmlns/siard/1.0/schema0/table.xsd"
+           xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="table">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" maxOccurs="unbounded" name="row" type="rowType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:complexType name="rowType">
+        <xs:sequence>
+            <xs:element name="c1" type="xs:integer"/>
+            <xs:element name="c2" type="xs:integer"/>
+            <xs:element name="c3" type="xs:dateTime"/>
+            <xs:element name="c4" nillable="true" type="xs:string"/>
+            <xs:element name="c5" nillable="true" type="xs:string"/>
+            <xs:element name="c6" nillable="true" type="xs:string"/>
+            <xs:element name="c7" nillable="true" type="xs:string"/>
+            <xs:element name="c8" type="xs:integer"/>
+            <xs:element name="c9" type="xs:string"/>
+            <xs:element name="c10" type="xs:string"/>
+            <xs:element name="c11" type="xs:string"/>
+            <xs:element name="c12" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>
