@@ -134,20 +134,17 @@ if __name__ == '__main__':
         '--input',
         help='Path to XML file',
         type=str,
-        default='table.xml',
         required=True)
     parser.add_argument(
         '-o',
         '--output',
         help='Path to CSV file',
         type=str,
-        default='table.csv',
         required=True)
     parser.add_argument(
         '-s',
         '--schema',
         help='Path to XSD file',
-        default='table.xsd',
         type=str)
     args = parser.parse_args()
 
