@@ -20,7 +20,7 @@ class XMLParser(object):
     :param tag: Restrict elements to those elements that match the given tag, defaults to all elements.
         Namespaces must be declared in Clark's Notation: {URI}localname.
     :param dtd_validation: Validate the document against a DTD, defaults to False.
-    :param schema: Validate the document against a XML schema (bytes version).
+    :param schema: Validate the document against an XML schema (bytes version).
     """
 
     def __init__(self,
